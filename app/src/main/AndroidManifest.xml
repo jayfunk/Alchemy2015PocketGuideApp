@@ -20,10 +20,6 @@
             android:name=".EventActivity"
             android:label="@string/title_activity_event" >
         </activity>
-        <activity
-            android:name=".SelectDayActivity"
-            android:label="@string/title_activity_select_day" >
-        </activity>
     </application>
 
 </manifest>
