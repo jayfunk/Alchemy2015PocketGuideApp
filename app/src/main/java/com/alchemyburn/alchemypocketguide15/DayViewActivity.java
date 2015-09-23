@@ -58,14 +58,11 @@ public class DayViewActivity extends Activity {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Intent intent = new Intent(this, EventActivity.class);
+            Intent intent = new Intent(DayViewActivity.this, EventActivity.class);
             intent.putExtra(EVENT_DATA, events.get(position).getJSONEvent().toString());
             startActivity(intent);
         }
-
     }
-
-
 
     private List<Map<String, String>> getEventData(){
         JSONArray jsonArray = getJSONArray();

@@ -15,8 +15,10 @@ public class AlchemyEvent {
     String eventName;
     String location;
     String description;
-    Boolean allDayEvent;
+    String allDayEvent;
+    Boolean isAllDayEvent;
     private JSONObject JSONEvent;
+    private String daysString;
 
     public AlchemyEvent(JSONObject event) {
         setJSONEvent(event);
@@ -24,20 +26,23 @@ public class AlchemyEvent {
         setEndDate(event.optString("End"));
         setEventName(event.optString("Event Name"));
         setLocation(event.optString("Location"));
-        setDescription(event.optString("Desription"));
+        setDescription(event.optString("Description"));
         setAllDayEvent(event.optString("All Day Event?"));
+        setDays(event.optString("Days"));
     }
 
-    public Boolean getAllDayEvent() {
+    public String getAllDayEvent() {
         return allDayEvent;
     }
 
     public void setAllDayEvent(String allDayEvent) {
         if(allDayEvent.toLowerCase().equals("yes")) {
-            this.allDayEvent = true;
+            this.isAllDayEvent= true;
         }else {
-            this.allDayEvent = false;
+            this.isAllDayEvent= false;
         }
+
+        this.allDayEvent = allDayEvent;
     }
 
     public String getStartDate() {
@@ -61,7 +66,8 @@ public class AlchemyEvent {
     }
 
     public void setDays(String days) {
-        this.days  = days.split(",");
+        this.days = days.split(",");
+        this.daysString = days;
     }
 
     public String getEventName() {
@@ -94,5 +100,9 @@ public class AlchemyEvent {
 
     public void setJSONEvent(JSONObject JSONEvent) {
         this.JSONEvent = JSONEvent;
+    }
+
+    public String getDaysText() {
+        return daysString;
     }
 }
