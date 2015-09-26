@@ -3,6 +3,7 @@ package com.alchemyburn.alchemypocketguide15;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DayViewActivity extends Activity {
+public class DayViewActivity extends AppCompatActivity {
 
     List<Map<String, String>> eventNames;
 
@@ -42,7 +43,13 @@ public class DayViewActivity extends Activity {
 
         setContentView(R.layout.activity_day_view);
 
-        eventNames = this.getEventData();
+        Intent intent = getIntent();
+
+        String daySelected = intent.getStringExtra(SelectDayActivity.SELECTED_DAY);
+
+        setTitle(getTitle().toString() + " " + daySelected);
+
+        eventNames = this.getDaysEventData(daySelected);
 
         ListView dayView = (ListView) findViewById(R.id.dayView);
 
@@ -64,23 +71,25 @@ public class DayViewActivity extends Activity {
         }
     }
 
-    private List<Map<String, String>> getEventData(){
+    private List<Map<String, String>> getDaysEventData(String daySelected){
+
         JSONArray jsonArray = getJSONArray();
+
         List<Map<String, String>> eventData = new ArrayList<Map<String,String>>();
 
         for(int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject eventJSON = jsonArray.getJSONObject(i);
-
                 AlchemyEvent event = new AlchemyEvent(eventJSON);
 
-                this.events.add(event);
+                if(!isOnSelectedDay(daySelected, event)){
+                    continue;
+                }
 
                 HashMap<String, String> eventNameMap = new HashMap<String, String>();
-
                 eventNameMap.put("eventName", event.getEventName());
-
                 eventData.add(eventNameMap);
+                this.events.add(event);
 
             } catch (JSONException e) {
                 Toast.makeText(getApplicationContext(), "Error" + e.toString(), Toast.LENGTH_SHORT).show();
@@ -88,6 +97,18 @@ public class DayViewActivity extends Activity {
         }
 
         return eventData;
+    }
+
+    private boolean isOnSelectedDay(String daySelected, AlchemyEvent event) {
+        boolean isFromSelectedDay = false;
+        String[] days = event.getDays();
+        for(int i = 0; i < days.length; i++){
+            String day = days[i];
+            if(day.equalsIgnoreCase(daySelected)){
+                isFromSelectedDay = true;
+            }
+        }
+        return isFromSelectedDay;
     }
 
 
@@ -131,7 +152,6 @@ public class DayViewActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_day_view, menu);
         return true;
     }
 

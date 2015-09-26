@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.alchemyburn.alchemypocketguide15.EventActivity">
-    <item android:id="@+id/action_add_calendar_event" android:title="@string/action_add_calendar_event"
+    tools:context="com.alchemyburn.alchemypocketguide15.SelectDayActivity">
+    <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>
