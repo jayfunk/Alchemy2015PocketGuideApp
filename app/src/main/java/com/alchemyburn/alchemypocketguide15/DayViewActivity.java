@@ -25,6 +25,8 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +53,8 @@ public class DayViewActivity extends AppCompatActivity {
 
         eventNames = this.getDaysEventData(daySelected);
 
+        eventNames = sortEventsAlphabetically(eventNames);
+
         ListView dayView = (ListView) findViewById(R.id.dayView);
 
         dayView.setOnItemClickListener(new onEventItemClickListener());
@@ -59,6 +63,17 @@ public class DayViewActivity extends AppCompatActivity {
 
         dayView.setAdapter(simpleAdapter);
 
+    }
+
+    private List sortEventsAlphabetically(List<Map<String, String>> eventNames) {
+        Collections.sort(eventNames, new Comparator<Map<String, String>>() {
+            @Override
+            public int compare(Map<String, String> lhs, Map<String, String> rhs) {
+                return lhs.get("eventName").compareToIgnoreCase(rhs.get("eventName"));
+            }
+        });
+
+        return eventNames;
     }
 
     private class onEventItemClickListener implements AdapterView.OnItemClickListener {

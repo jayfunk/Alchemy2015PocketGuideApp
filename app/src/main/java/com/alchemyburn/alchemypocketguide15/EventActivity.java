@@ -1,6 +1,5 @@
 package com.alchemyburn.alchemypocketguide15;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.provider.CalendarContract;
 import android.support.v7.app.AppCompatActivity;
@@ -42,10 +41,10 @@ public class EventActivity extends AppCompatActivity {
         eventNameView.setText(event.getEventName());
 
         TextView startView = (TextView) findViewById(R.id.startDateView);
-        startView.setText(event.getStartDate());
+        startView.setText(event.getStartTime());
 
         TextView endView = (TextView) findViewById(R.id.endDateView);
-        endView.setText(event.getEndDate());
+        endView.setText(event.getEndTime());
 
         TextView locationView = (TextView) findViewById(R.id.locationView);
         locationView.setText(event.getLocation());
@@ -62,7 +61,8 @@ public class EventActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_event, menu);
+        if(!event.getStartTime().trim().isEmpty() || !event.getEndTime().trim().isEmpty())
+            getMenuInflater().inflate(R.menu.menu_event, menu);
         return true;
     }
 
@@ -80,9 +80,11 @@ public class EventActivity extends AppCompatActivity {
 
     private void createCalendarEventForAlchemyEvent() {
         Calendar beginTime = Calendar.getInstance();
-        beginTime.setTime(getDate(event.getStartDate()));
         Calendar endTime = Calendar.getInstance();
-//        endTime.set(getDate(event.getEndDate()));
+
+        beginTime.setTime(getDate(event.getStartDate()));
+        endTime.setTime(getDate(event.getEndDate()));
+
         Intent intent = new Intent(Intent.ACTION_INSERT)
                 .setData(CalendarContract.Events.CONTENT_URI)
                 .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
@@ -91,19 +93,19 @@ public class EventActivity extends AppCompatActivity {
                 .putExtra(CalendarContract.Events.DESCRIPTION, event.getDescription())
                 .putExtra(CalendarContract.Events.EVENT_LOCATION, event.getLocation())
                 .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY)
-                .putExtra(CalendarContract.Events.RRULE, "FREQ=DAILY;BYDAY=" + event.getDaysAbrv() + " ;UNTIL=20151004T000000Z");
+                .putExtra(CalendarContract.Events.RRULE, "FREQ=DAILY;BYDAY=" + event.getDaysAbrv() + ";UNTIL=20151004T000000Z");
         startActivity(intent);
     }
 
     private Date getDate(String stringDate) {
-        SimpleDateFormat sdf = new SimpleDateFormat("h:mm:ss a dd/mm/yy");
+        SimpleDateFormat sdf = new SimpleDateFormat("h:mm:ss a MM/dd/yy");
         Date date = null;
 
-//        try {
-//            date = sdf.parse(stringDate + );
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            date = sdf.parse(stringDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return date;
     }
 }
