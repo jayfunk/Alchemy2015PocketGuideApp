@@ -7,5 +7,6 @@
     <string name="title_activity_event">Event</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
 
 </resources>

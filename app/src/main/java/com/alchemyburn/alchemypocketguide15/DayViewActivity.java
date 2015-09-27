@@ -65,7 +65,7 @@ public class DayViewActivity extends AppCompatActivity {
 
     }
 
-    private List sortEventsAlphabetically(List<Map<String, String>> eventNames) {
+    private List<Map<String,String>> sortEventsAlphabetically(List<Map<String, String>> eventNames) {
         Collections.sort(eventNames, new Comparator<Map<String, String>>() {
             @Override
             public int compare(Map<String, String> lhs, Map<String, String> rhs) {

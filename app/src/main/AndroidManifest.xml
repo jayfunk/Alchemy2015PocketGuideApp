@@ -5,9 +5,13 @@
     android:versionName="1.0.0">
 
     <uses-sdk
-        android:minSdkVersion="15"
         android:maxSdkVersion="23"
-        android:targetSdkVersion="23"/>
+        android:minSdkVersion="15"
+        android:targetSdkVersion="23" />
+
+    <android:uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -15,8 +19,10 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SelectDayActivity"
-            android:label="@string/app_name">
+            android:name=".SplashScreen"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,12 +30,14 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".SelectDayActivity"
+            android:label="@string/app_name"></activity>
+        <activity
             android:name=".DayViewActivity"
             android:label="@string/title_day_view" />
         <activity
             android:name=".EventActivity"
             android:label="@string/title_activity_event" />
-
     </application>
 
 </manifest>
