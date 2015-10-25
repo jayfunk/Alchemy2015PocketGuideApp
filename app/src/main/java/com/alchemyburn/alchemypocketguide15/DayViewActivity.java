@@ -1,6 +1,5 @@
 package com.alchemyburn.alchemypocketguide15;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -53,19 +52,32 @@ public class DayViewActivity extends AppCompatActivity {
 
         eventNames = this.getDaysEventData(daySelected);
 
-        eventNames = sortEventsAlphabetically(eventNames);
+        eventNames = sortEventNamesAlphabetically(eventNames);
+
+        events = sortEventsAlphabetically(events);
 
         ListView dayView = (ListView) findViewById(R.id.dayView);
 
         dayView.setOnItemClickListener(new onEventItemClickListener());
 
-        SimpleAdapter simpleAdapter = new SimpleAdapter(this, eventNames, android.R.layout.simple_list_item_1, new String[] {"eventName"}, new int[] {android.R.id.text1});
+        SimpleAdapter simpleAdapter = new SimpleAdapter(this, eventNames, android.R.layout.simple_list_item_1, new String[]{"eventName"}, new int[]{android.R.id.text1});
 
         dayView.setAdapter(simpleAdapter);
 
     }
 
-    private List<Map<String,String>> sortEventsAlphabetically(List<Map<String, String>> eventNames) {
+    private List<AlchemyEvent> sortEventsAlphabetically(List<AlchemyEvent> events) {
+        Collections.sort(events, new Comparator<AlchemyEvent>() {
+            @Override
+            public int compare(AlchemyEvent lhs, AlchemyEvent rhs) {
+                return lhs.getEventName().compareToIgnoreCase(rhs.getEventName());
+            }
+        });
+
+        return events;
+    }
+
+    private List<Map<String, String>> sortEventNamesAlphabetically(List<Map<String, String>> eventNames) {
         Collections.sort(eventNames, new Comparator<Map<String, String>>() {
             @Override
             public int compare(Map<String, String> lhs, Map<String, String> rhs) {
@@ -86,18 +98,18 @@ public class DayViewActivity extends AppCompatActivity {
         }
     }
 
-    private List<Map<String, String>> getDaysEventData(String daySelected){
+    private List<Map<String, String>> getDaysEventData(String daySelected) {
 
         JSONArray jsonArray = getJSONArray();
 
-        List<Map<String, String>> eventData = new ArrayList<Map<String,String>>();
+        List<Map<String, String>> eventData = new ArrayList<Map<String, String>>();
 
-        for(int i = 0; i < jsonArray.length(); i++) {
+        for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject eventJSON = jsonArray.getJSONObject(i);
                 AlchemyEvent event = new AlchemyEvent(eventJSON);
 
-                if(!isOnSelectedDay(daySelected, event)){
+                if (!isOnSelectedDay(daySelected, event)) {
                     continue;
                 }
 
@@ -117,9 +129,9 @@ public class DayViewActivity extends AppCompatActivity {
     private boolean isOnSelectedDay(String daySelected, AlchemyEvent event) {
         boolean isFromSelectedDay = false;
         String[] days = event.getDays();
-        for(int i = 0; i < days.length; i++){
+        for (int i = 0; i < days.length; i++) {
             String day = days[i];
-            if(day.equalsIgnoreCase(daySelected)){
+            if (day.equalsIgnoreCase(daySelected)) {
                 isFromSelectedDay = true;
             }
         }
@@ -127,7 +139,7 @@ public class DayViewActivity extends AppCompatActivity {
     }
 
 
-    private JSONArray getJSONArray(){
+    private JSONArray getJSONArray() {
         String jsonString = parseEventJSONData();
 
         try {
